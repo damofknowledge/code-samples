@@ -1,6 +1,6 @@
 # Code Samples
 
-Selected pieces of work from recent projects
+Selected pieces of work from recent projects. Learn more at <http://www.damofknowledge.com/>.
 
 ## Flight Search Results
 
