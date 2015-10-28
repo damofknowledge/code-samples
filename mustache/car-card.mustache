@@ -1,0 +1,91 @@
+{{#selected-card-header}}
+	<header class="selected-card-header bg-brand-secondary fg-white">
+		{{selected-card-header}}
+	</header>
+{{/selected-card-header}}
+<div class="car-card container-card">
+	<h2 class="car-title font-size-sm">{{title}}</h2>
+	<div class="car-info">
+		{{#images}}
+			<div class="car-images car-info-cell">
+				{{#type}}<img alt="{{alt}}" class="car-image-type" src="{{&url}}" />{{/type}}
+				{{#brand}}<img alt="{{alt}}" class="car-image-brand" src="{{&url}}" />{{/brand}}
+			</div>
+		{{/images}}
+		{{#itinerary}}
+			<ul class="car-itinerary car-info-cell">
+				<li>{{type}}</li>
+				<li>
+					<ul class="car-options list-inline">
+						{{#options}}<li>{{option}}</li>{{/options}}
+					</ul>
+				</li>
+				<li>
+					<dl class="car-additional-info list-piped font-size-xs">
+						{{#additionalInfo}}
+							{{#icon}}<dt><img alt="{{alt}}" class="icon" src="{{src}}" /></dt>{{/icon}}
+							<dd>{{value}}</dd>
+						{{/additionalInfo}}
+					</dl>
+				</li>
+				{{#inclusionsAndExclusions}}
+					<li class="car-inclusions car-optional" data-agent="CarIncludeExclude">
+						<input class="micro-trigger link" type="button" value="{{label}}" />
+						<dl class="micro-content noneBlock">
+							{{#includes}}
+								{{>car-card-list}}
+							{{/includes}}
+							{{#excludes}}
+								{{>car-card-list}}
+							{{/excludes}}
+						</dl>
+					</li>
+				{{/inclusionsAndExclusions}}
+			</ul>
+		{{/itinerary}}
+		{{#pickUp}}
+			<dl class="car-pick-up car-optional car-info-cell">
+				<dt>{{label}}</dt>
+				{{#distance}}<dd class="car-distance">{{distance}}</dd>{{/distance}}
+				{{#location}}<dd>{{{location}}}</dd>{{/location}}
+				{{#terminal}}<dd>{{terminal}}</dd>{{/terminal}}
+			</dl>
+		{{/pickUp}}
+		{{#dropOff}}
+			<dl class="car-drop-off car-optional car-info-cell">
+				<dt>{{label}}</dt>
+				{{#distance}}<dd class="car-distance">{{distance}}</dd>{{/distance}}
+				{{#location}}<dd>{{{location}}}</dd>{{/location}}
+				{{#terminal}}<dd>{{terminal}}</dd>{{/terminal}}
+			</dl>
+		{{/dropOff}}
+		{{#priceDetails}}
+			<div class="car-price car-info-cell text-right">
+				{{{packageProductIcons}}}
+				<dl>
+					<dt class="car-total h1">
+						{{#priceBeforeDiscount}}<s class="car-original-price h3 block text-muted">{{priceBeforeDiscount}}</s>{{/priceBeforeDiscount}}
+						{{totalPrice}}
+					</dt>
+					{{#discount}}<dd class="car-discount font-size-xs">{{label}}{{#savings}}<span class="car-discount-savings"> - {{savings}}</span>{{/savings}}</dd>{{/discount}}
+					{{#rate}}<dd class="car-rate car-optional font-size-xs text-muted">{{rate}}</dd>{{/rate}}
+					{{#mileage}}<dd class="car-mileage car-optional font-size-xs text-muted">{{mileage}}</dd>{{/mileage}}
+					{{#freeCancel}}<dd class="car-free-cancel font-size-xs fg-brand-promo">{{freeCancel}}</dd>{{/freeCancel}}
+				</dl>
+				{{#select}}<a href="{{&url}}" class="car-select buttons-primary buttons-compact" data-agent="{{agent}}" data-wt-ti="Select"><span class="car-message">{{label}}</span> <span class="offscreen">{{title}}</span></a>{{/select}}
+			</div>
+		{{/priceDetails}}
+	</div>
+	{{#carFees}}
+		<div class="car-fees car-optional font-size-xs">
+			{{{carFees}}}
+		</div>
+	{{/carFees}}
+
+	{{! This button is modified on change pages and still displays in small views }}
+	{{#selected-card-button}}
+		<div class="selected-card-button text-right">
+		{{#select}}<a href="{{&url}}" class="buttons-primary buttons-compact" data-agent="{{agent}}" data-wt-ti="Select"><span class="car-message">{{label}}</span> <span class="offscreen">{{title}}</span></a>{{/select}}
+		</div>
+	{{/selected-card-button}}
+</div>

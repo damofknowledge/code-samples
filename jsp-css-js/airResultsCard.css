@@ -1,0 +1,581 @@
+@import  (less) "WEB-INF/module/zero/results/airResultSummary.css";
+
+@carrier-logo-height: 33px;
+@carrier-logo-width: 44px;
+
+.airResultsCard() {
+	@arrow-size: 10px;
+	@font-size-xxs: 10px;
+	@line-height-xxs: 12px;
+
+	.airResultsCard {
+		border: 1px solid @color-neutral-md-light;
+		.clearfix();
+		color: @color-black;
+
+		// air cards with special loyalty earn
+		&.hasBonusLoyalty {
+			border-top: 3px solid @color-loyalty;
+		}
+		// Card Layout Sections
+		.airSummary {
+			.display-inline-block();
+			float: left;
+			width: 72%;
+		}
+		.airPrice {
+			.display-inline-block();
+			float: right;
+			width: 28%;
+		}
+		.airDetails {
+			clear: both;
+			max-height: 0;
+			overflow: hidden;
+			.transition(all .25s ease);
+
+			&.is-open {
+				max-height: 999em;
+			}
+			.no-csstransitions &.is-open,
+			&.transition-end {
+				// Fixes issue with Android 4.4.2. Does not respect overflow: visible, yet we need microcontent to be available when opened
+				overflow: visible;
+			}
+		}
+		.airServiceFeeDisclaimer {
+			color: @color-neutral-md;
+			float: right;
+			font-size: @font-size-xs - 2;
+		}
+		// Card Utility Classes
+		.airportCodeDiffer,
+		.alert span {
+			background-color: lighten(@color-error, 20%);
+			color: @color-black;
+		}
+		.contactAirlineToBuyText {
+			// invisible by default, we only show for @breakpoint-s
+			display: none;
+		}
+		.buyFromAirline {
+		    font-size: @font-size-xs;
+		}
+		.airResultDetailsToggle {
+			clear: both;
+			font-size: @font-size-xs;
+			padding-left: @carrier-logo-width + @offset-horizontal-md; // match width of logo column to align with flight times
+			padding-top: @offset-vertical-xs;
+
+			.progressIndicator {
+				.display-inline-block();
+				margin-left: @offset-horizontal-sm;
+			}
+		}
+		// Air Price Container
+		.changeCost {
+			white-space: nowrap;
+			margin-left: @border-radius-sm;
+		}
+		.priceGroup {
+			.display-inline-block();
+			float: left;
+			padding-right: @offset-horizontal-sm;
+			width: 50%; // 2 groups per row per container
+			text-align: right;
+
+			&:first-child {
+				width: 51%;
+			}
+			&:last-child {
+				padding-right: 0;
+				width: 49%;
+			}
+			.lt-ie9 & {
+				width: 50%;
+			}
+		}
+		.pkgIcons {
+			.i-plus {
+				font-size: @font-size-base / 2;
+				vertical-align: @line-height-xxs / 4;
+			}
+		}
+		.numNights {
+			color: @color-neutral-md;
+			font-size: @font-size-xs;
+		}
+		.primaryPrice {
+			font-size: @font-size-xxl;
+			font-weight: bold;
+			padding-bottom: @offset-vertical-xs;
+
+			.money-symbol,
+			.money-cents {
+				font-size: @font-size-base;
+				vertical-align: text-top;
+			}
+
+			&.pkgPrice {
+				 padding-bottom: 0;
+			 }
+		}
+		.pointsMetric,
+		.priceMetric {
+			color: @color-neutral-md;
+			font-size: @font-size-xs;
+			font-weight: normal;
+			line-height: @line-height-md;
+		}
+		.discountPricing {
+			font-size: @font-size-xxs;
+			line-height: @line-height-xxs;
+			padding-bottom: @offset-vertical-xs;
+
+			.microTrigger {
+				cursor: pointer;
+			}
+		}
+		.showPaymentDiscountContent {
+			font-size: @font-size-xs;
+			line-height: @line-height-sm;
+			padding: @offset-vertical-sm @offset-horizontal-sm;
+			text-align: left;
+			width: 200px;
+		}
+		.paymentDiscountHeader {
+			font-weight: bold;
+		}
+		.loyaltyEarnAmount {
+			color: @color-loyalty;
+			font-size: @font-size-xs;
+			line-height: @line-height-sm;
+
+			.bonusLoyalty {
+				font-size: @font-size-xxs;
+			}
+		}
+		.totalChangeCost {
+			line-height: @line-height-sm;
+		}
+		.airCard-button .buttons-primary {
+			overflow: hidden;
+		}
+		.lsaAlert {
+			color: @color-attention;
+			font-size: @font-size-xxs;
+			line-height: @line-height-xxs;
+		}
+		.catchAllContainer {
+			clear: both;
+			padding: @offset-vertical-sm 0;
+		}
+		.catchAll {
+			background: @color-neutral-x-light;
+			.border-radius(@border-radius-md);
+			padding: 5px 10px;
+
+			& > p {
+				margin: @offset-vertical-xs 0;
+			}
+			// Uniform icon styles
+			i {
+				font-size: @font-size-md;
+				margin-right: 3px;
+			}
+		}
+		.loyaltyEarn {
+			color: @color-loyalty;
+		}
+		.pricing .airFreeCancel {
+			color: @color-promo;
+			font-size: @font-size-xs;
+			line-height: @line-height-sm;
+		}
+		.airFreeCancel {
+			i, strong {
+				color: @color-promo;
+			}
+		}
+		.i-baggage {
+			color: @color-neutral-md-dark;
+		}
+		.i-baggage-x {
+			color: @color-attention;
+		}
+	}
+
+	// Timeline view of details
+	.airSliceDetails {
+		color: @color-neutral-md-dark;
+		font-size: @font-size-xs;
+		line-height: @line-height-sm;
+	}
+	.timeline-container {
+		display: table;
+		table-layout: fixed;
+		width: 100%;
+	}
+	.timeline-group {
+		display: table-row;
+	}
+	.timeline-item {
+		display: table-cell;
+		padding: 0 0 @offset-vertical @offset-horizontal-sm;
+
+		&.timeline-date {
+			text-align: right;
+			width: 22%;
+		}
+		&.timeline-time {
+			background: url("/image/global/vertical-dash.png") repeat-y 100% @offset-vertical-sm;
+			padding-right: @offset-horizontal-md;
+			position: relative;
+			text-align: right;
+			text-transform: lowercase;
+			width: 14%;
+		}
+		&.timeline-info {
+			padding-left: @offset-horizontal-md;
+			width: 64%;
+		}
+	}
+	.airSliceDetails:last-child .timeline-group.last-child .timeline-item {
+		padding-bottom: 0;
+	}
+	.timeline-marker {
+		background: @color-white-space;
+		border-radius: 100%;
+		border: 2px solid @color-brand-2;
+		height: 11px;
+		position: absolute;
+		right: -5px;
+		top: 5px;
+		width: 11px;
+	}
+	.timeline-label {
+		font-size: @font-size-sm;
+		line-height: @line-height-md;
+		&.city {
+			margin-right: @offset-vertical-xs;
+		}
+	}
+	.view-seats {
+		font-size: @font-size-xs;
+		white-space: nowrap;
+		&:before {
+			border-left: 1px solid @color-neutral-md;
+			content: '';
+			padding-left: @offset-vertical-sm;
+		}
+	}
+	.soloLeg .timeline-group:first-child,
+	.firstLeg .timeline-group:first-child,
+	.soloLeg .timeline-group.last-child,
+	.lastLeg .timeline-group.last-child {
+		.timeline-label {
+			color: @color-black;
+		}
+		.timeline-marker {
+			background: @color-brand-2;
+		}
+	}
+	.soloLeg .timeline-group:first-child .timeline-marker:before,
+	.firstLeg .timeline-group:first-child .timeline-marker:before {
+		border-top: 5px solid @color-white-space;
+		content: "";
+		height: 0;
+		left: 0;
+		position: absolute;
+		top: -7px;
+		width: 100%;
+	}
+	.soloLeg .timeline-group.last-child .timeline-marker:before,
+	.lastLeg .timeline-group.last-child .timeline-marker:before {
+		background: url("/image/global/vertical-dash.png") repeat-y 50% 0;
+		content: "";
+		height: 5px;
+		left: 0;
+		position: absolute;
+		top: -7px;
+		width: 100%;
+	}
+	.soloLeg .timeline-group.last-child .timeline-time,
+	.lastLeg .timeline-group.last-child .timeline-time {
+		background: none;
+	}
+	.timeline-flightInfo {
+		padding-top: @offset-vertical-sm;
+
+		.list-piped {
+			overflow: visible;
+		}
+	}
+	.timeline-messages {
+		padding-top: @offset-vertical-xs;
+	}
+	.fareFamily {
+		.display-inline-block();
+
+		.microContent {
+			padding: @offset-vertical-sm @offset-horizontal-sm;
+			width: 240px;
+		}
+	}
+}
+
+.airSelectedCard() {
+	.selected-flight-card {
+		background: @color-brand-2;
+		margin: @offset-vertical-sm 0;
+		padding: 3px;
+
+		.selected-flight-card-header {
+			font-size: @font-size-xs;
+			padding: 0 @offset-horizontal-sm;
+			text-transform: uppercase;
+		}
+
+		.airResultsCard {
+			border: none;
+			.box-shadow(none);
+			margin: 0;
+		}
+	}
+}
+
+// air-responsify mixin
+//   targetClass - the class of the module container
+.air-responsify(@targetClass) {
+	@lg: {
+		.airResultsMod {
+			// space for intrastitial to live before results load
+			min-height: 450px;
+		}
+	};
+
+	@md: {
+		.@{targetClass} {
+			.airResultsCard {
+				.airSummary {
+					width: 69%;
+				}
+				.airPrice {
+					width: 31%;
+				}
+			}
+			.airSliceDetails {
+				.timeline-item {
+					padding: 0 0 @offset-vertical @offset-horizontal-sm;
+
+					&.timeline-date {
+						width: 29%;
+					}
+					&.timeline-time {
+						width: 16%;
+						padding-right: 15px;
+					}
+					&.timeline-info {
+						width: 55%;
+						padding-left: 15px;
+					}
+				}
+			}
+		}
+	};
+
+	@sm: {
+		.@{targetClass} {
+			.airResultsCard {
+				position: relative;
+				.flexbox & {
+					.flex-display(flex);
+					.flex-direction(column);
+				}
+
+				.airSummary {
+					width: 100%;
+					.flexbox & {
+						.flex-order(2);
+					}
+				}
+				.pkgIcons {
+					display: none;
+				}
+				.airPrice {
+					width: 100%;
+					.flexbox & {
+						// move .airSummary up closer
+						margin-bottom: (0 - @carrier-logo-height);
+						.flex-order(1);
+					}
+				}
+				.contactAirlineToBuyText {
+					display: block;
+					margin-bottom: @offset-vertical-sm;
+				}
+				.priceGroup {
+					padding-left: @carrier-logo-width + @offset-horizontal-sm; // width of carrier logo plus offset
+					width: 100%;
+				}
+				.pricing {
+					padding-right: 0;
+					position: relative;
+					z-index: 1;
+				}
+				.primaryPrice {
+					font-size: @font-size-xl;
+				}
+				.airCard-button .buyFromAirline a,
+				.airCard-button .buttons-primary {
+					&,
+					&:visited,
+					&:focus,
+					&:hover,
+					&:active {
+						// convert to an invisible button that covers the entire card at smallest breakpoints
+						background-color: transparent;
+						background-image: none;
+						border: none;
+						.box-shadow(none);
+						color: transparent;
+						display: block;
+						height: 100%;
+						left: 0;
+						position: absolute;
+						text-decoration: none;
+						text-shadow: none;
+						top: 0;
+						width: 100%;
+						z-index: 1;
+					}
+				}
+				.lsaAlert {
+					display: none;
+				}
+				.airResultDetailsToggle {
+					display: none;
+				}
+				.airDetails {
+					// details is not supported in smallest view as its trigger is hidden, collapse/hide regardless of .is-open
+					max-height: 0;
+					overflow: hidden;
+					.transition(all 0s linear);
+				}
+				.flightTier .microTrigger {
+					color: @color-neutral-md;
+					font-weight: normal;
+				}
+			}
+			.airSliceDetails {
+				// label and date stack above the flight time
+				.timeline-group {
+					.clearfix();
+					display: block;
+					position: relative;
+				}
+				.timeline-item {
+					.display-inline-block();
+					&.timeline-date {
+						.display-inline-block();
+						background: url("/image/global/vertical-dash.png") repeat-y 100% @offset-vertical-sm;
+						float: left;
+						padding-bottom: 0;
+						padding-right: 15px;
+						width: 38%;
+					}
+					&.timeline-time {
+						.display-inline-block();
+						clear: left;
+						float: left;
+						position: static;
+						width: 38%;
+					}
+					&.timeline-info {
+						.display-inline-block();
+						background: url("/image/global/vertical-dash.png") repeat-y 0 @offset-vertical-sm;
+						float: none;
+						margin-left: -1px;
+						padding-left: 15px;
+						width: 62%;
+					}
+					.timeline-marker {
+						left: 38%;
+						margin-left: -6px;
+						right: auto;
+					}
+				}
+			}
+			.soloLeg .timeline-group.last-child .timeline-item,
+			.lastLeg .timeline-group.last-child .timeline-item {
+				background: none;
+			}
+			.airPrice .i-baggage-x {
+				display: none;
+			}
+		}
+		.tripDetailsAirMod {
+			.airResultsCard .detailsContainer .airResultDetailsToggle {
+				display: block;
+				padding-left: 0;
+			}
+		}
+	};
+
+	@xxs: {
+		.@{targetClass} {
+			.airResultsCard {
+				font-size: @font-size-xs + 1px; // 13px
+
+				.airSliceDetails {
+					// stack details secions and have markers to the left
+					.timeline-group {
+						display: block;
+						position: relative;
+					}
+					.timeline-item {
+						display: block;
+						padding: 0 0 @offset-vertical @offset-horizontal-md;
+						width: 100%;
+
+						&.timeline-date {
+							background: url("/image/global/vertical-dash.png") repeat-y 5px @offset-vertical-sm;
+							display: inline-block;
+							float: left;
+							padding: 0 @offset-horizontal-sm 0 @offset-horizontal-md;
+							text-align: left;
+							width: auto;
+						}
+						&.timeline-time {
+							background: url("/image/global/vertical-dash.png") repeat-y 5px @offset-vertical-sm;
+							padding: 0 0 0 @offset-horizontal-md;
+							position: static;
+							text-align: left;
+							width: 100%;
+						}
+						&.timeline-info {
+							background: url("/image/global/vertical-dash.png") repeat-y 5px @offset-vertical-sm;
+							clear: left;
+							margin-left: 0;
+							padding: 0 0 @offset-vertical @offset-horizontal-md;
+							width: 100%;
+						}
+						.timeline-marker {
+							left: 0;
+							margin-left: 0;
+						}
+					}
+					.timeline-label {
+						font-size: @font-size-xs + 1px; // 13px
+					}
+				}
+				.soloLeg .timeline-group.last-child .timeline-item,
+				.lastLeg .timeline-group.last-child .timeline-item {
+					background: none;
+				}
+			}
+		}
+	};
+	.responsify(@lg, @md, @sm, {}, @xxs);
+}
+

@@ -1,0 +1,175 @@
+@car-card-border: 1px;
+@car-image-height: 20px;
+@car-image-width: 100px;
+@car-micro-content: 320px;
+
+.car-card {
+	border: @car-card-border solid @color-neutral-md-light;
+	padding: @offset-vertical-sm - 1 @offset-horizontal-sm - 1;
+
+	.car-title {
+		font-weight: bold;
+		margin-left: @offset-horizontal-sm * 12;
+	}
+	.car-info {
+		display: table;
+		margin-bottom: @offset-vertical-sm;
+		width: 100%;
+	}
+	.car-info-cell {
+		display: table-cell;
+		vertical-align: top;
+	}
+	.car-images,
+	.car-image-type {
+		width: @car-image-width;
+	}
+	.car-image-brand {
+		display: block;
+		height: @car-image-height;
+		margin: 0 auto;
+	}
+	.car-itinerary,
+	.car-pick-up,
+	.car-drop-off,
+	.car-inclusions .micro-trigger {
+		font-size: @font-size-xs;
+	}
+	.car-itinerary {
+		padding-left: @offset-horizontal-md;
+	}
+	.car-options {
+		li {
+			margin-right: 0;
+
+			&:not(:last-of-type):after{
+				content: ",\0000a0";
+			}
+		}
+	}
+	.car-additional-info {
+		margin-top: @offset-horizontal-sm / 2;
+
+		dt,
+		dd {
+			vertical-align: bottom;
+		}
+		dt {
+			margin-right: @offset-horizontal-sm / 2;
+
+			&:before {
+				border-width: 0;
+				margin: 0;
+			}
+		}
+		dd {
+			margin-right: @offset-horizontal-sm;
+		}
+	}
+	.car-pick-up,
+	.car-drop-off,
+	.car-price {
+		padding-left: @offset-horizontal-sm;
+	}
+	.car-pick-up,
+	.car-drop-off {
+		width: 18%;
+	}
+	.car-price {
+		width: 20%;
+	}
+	.car-select {
+		margin-top: @offset-vertical-sm;
+		outline-color: @color-button;
+	}
+	.car-total,
+	.car-distance {
+		font-weight: bold;
+	}
+	.car-inclusions .micro-content {
+		padding: @offset-vertical-sm @offset-horizontal-sm;
+		width: @car-micro-content;
+	}
+	.car-fees {
+		margin-left: @offset-horizontal-sm * 12;
+	}
+	.pkgIcons {
+		.i-plus {
+			font-size: @font-size-base / 2;
+			vertical-align: @line-height-sm / 4;
+		}
+	}
+	.selected-card-button {
+		margin-top: @offset-vertical-sm;
+	}
+}
+@car-card-sm: {
+	.car-card {
+		.car-optional {
+			display: none;
+		}
+		.car-itinerary {
+			font-size: @font-size-sm;
+		}
+	}
+};
+@car-card-xs: {
+	.car-card {
+		border-width: 0;
+		box-shadow: inset 0 -@car-card-border 0 @color-neutral-md-light, inset 0 @car-card-border 0 @color-neutral-md-light;
+		margin: 0;
+		position: relative;
+
+		.car-info {
+			margin-bottom: 0;
+		}
+		.car-itinerary {
+			width: 46%;
+		}
+		.car-price {
+			width: auto;
+		}
+		.car-select {
+			background-color: transparent;
+			background-image: none;
+			border-width: 0;
+			box-shadow: none;
+			height: 100%;
+			left: 0;
+			margin-top: 0;
+			outline-color: @color-link;
+			position: absolute;
+			top: 0;
+			width: 100%;
+			z-index: 1;
+
+			.car-message {
+				.offscreen();
+			}
+		}
+	}
+};
+@car-card-xxs: {
+	.car-card {
+		.car-title {
+			margin-left: @offset-horizontal-sm * 9;
+		}
+		.car-images,
+		.car-image-type {
+			min-width: @car-image-width * 0.8;
+			width: @car-image-width * 0.8;
+		}
+		.car-itinerary {
+			padding-left: @offset-horizontal-sm;
+		}
+		.car-total {
+			font-size: @font-size-xl;
+		}
+		.car-original-price {
+			font-size: @font-size-md;
+			line-height: @line-height-base;
+		}
+	}
+};
+
+.responsify({}, {}, @car-card-sm, @car-card-xs, @car-card-xxs);

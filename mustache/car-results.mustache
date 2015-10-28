@@ -1,0 +1,31 @@
+{{#selectedCard}}
+	<div class="car-results">
+		<ol class="container-simple">
+			<li class="selected-card">{{>car-card}}</li>
+		</ol>
+	</div>
+{{/selectedCard}}
+
+<div class="car-results" id="results-list">
+	<div class="car-results-header col-row">
+		<div class="col-8 col-8-l col-8-m col-12-s col-12-xs col-12-xxs">
+			{{>car-results-sort}}
+			{{>car-results-disclaimer}}
+		</div>
+		<div class="col-4 col-4-l col-4-m col-12-s col-12-xs col-12-xxs">
+			{{>car-results-pagination}}
+		</div>
+		{{>car-results-transmission}}
+	</div>
+
+	<ol class="car-results-set">
+		{{#resultSet}}
+			<li>{{>car-card}}</li>
+		{{/resultSet}}
+	</ol>
+
+	<div class="car-results-footer">
+		{{>car-results-pagination}}
+		{{>car-results-disclaimer}}
+	</div>
+</div>
