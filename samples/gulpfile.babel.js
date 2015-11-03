@@ -7,19 +7,21 @@ import changed from 'gulp-changed';
 import concat from 'gulp-concat'; // Concatenates files
 import connect from 'gulp-connect'; // Runs a local dev server
 import del from 'del';
+import ftp from 'vinyl-ftp';
 import gutil from 'gulp-util';
 import imageoptim from 'gulp-imageoptim';
+import jshint from 'gulp-jshint';
 import less from 'gulp-less';
 import lint from 'gulp-eslint'; // Lint JS files, including JSX
 import minify from 'gulp-minify-css'; // Minifies css files
 import open from 'gulp-open'; // Open a URL in a web browser
 import sass from 'gulp-sass';
 import source from 'vinyl-source-stream'; // Use conventional text streams with Gulp
+import spritesmith from 'gulp.spritesmith';
 import streamify from 'gulp-streamify'; // Uglify stream bug
 import svgmin from 'gulp-svgmin'; // Shrink those svgs
 import uglify from 'gulp-uglify'; // Minifies js files
-import spritesmith from 'gulp.spritesmith';
-import csslint from 'gulp-csslint';
+import webp from 'gulp-webp';
 
 const config = {
 	port: 9005,
@@ -27,53 +29,75 @@ const config = {
 	paths: {
 		html: './*{.html,.php}',
 		images: './images/**/*',
-		bitmaps: './images/**/*{.jpg,.png,.gif}',
+		bitmaps: './images/**/*{.jpg,.png,.gif,.webp}',
 		svgs: './images/**/*.svg',
-		js: [
-			'./js/loadCSS.js',
-			'./js/ga.js',
-			'./js/jquery.bxslider.js',
-			'./js/twitterFetcher_v10_min.js',
-			'./js/functions.js',
-		],
+		js: './js/*.js',
 		css: './css/**/*.scss',
 		staticFiles: [
+			'./js/vendor/*',
 			'./apple-touch-icon.png',
 			'./favicon.ico',
 			'./Fonts/**/*',
 			'./screenshot.png',
 		],
-		dist: './dist-theme'
+		dist: './ampersandrew-ss-theme'
 	}
 }
 
-gulp.task('optimize:bitmaps', () => {
-	gulp.src(config.paths.bitmaps)
+gulp.task('deploy', ['default'], () => {
+
+    const conn = ftp.create({
+        host:     'ampersandrew.com',
+        user:     'Joel@ampersandrew.com',
+        password: 'Ppsalms143',
+        parallel: 10,
+        log:      gutil.log
+    });
+
+    const globs = [
+        config.paths.dist + '/**'
+    ];
+
+    return gulp.src( globs, { base: '.', buffer: false } )
+        .pipe( conn.newer( '/public_html/wp-content/themes' ) ) // only upload newer files
+        .pipe( conn.dest( '/public_html/wp-content/themes' ) );
+});
+
+gulp.task('optimize:images', () => {
+	gulp.src([
+		config.paths.bitmaps,
+		'!./images/*.webp'
+		])
 		.pipe(changed(config.paths.bitmaps))
 		.pipe(imageoptim.optimize())
 		.pipe(gulp.dest('images'));
-});
 
-gulp.task('optimize:svgs', () => {
 	gulp.src(config.paths.svgs)
 		.pipe(changed(config.paths.svgs))
 		.pipe(svgmin())
 		.pipe(gulp.dest('images'));
+
+	return gulp.src([
+		config.paths.bitmaps,
+		'!./images/l-ampersandrew-inline-animated.png'
+		])
+		.pipe(webp({quality:100}))
+		.pipe(gulp.dest('images'));
 });
 
-gulp.task('optimize', ['optimize:bitmaps', 'optimize:svgs'], () => {
+gulp.task('optimize', ['optimize:images'], () => {
 	gulp.src(config.paths.images)
 		.pipe(gulp.dest(config.paths.dist + '/images'));
 });
 
 gulp.task('spritesmith', () => {
-	const spriteData = gulp.src('images/sprite/*.png').pipe(spritesmith({
+	const spriteData = gulp.src('images/l-ampersandrew-inline-animated/*.png').pipe(spritesmith({
 		algorithm: 'top-down',
 		algorithmOpts: {
      		'sort': false
 		},
-		cssName: 'sprite.css',
-		imgName: 'sprite.png'
+		cssName: 'l-ampersandrew-inline-animated.css',
+		imgName: 'l-ampersandrew-inline-animated.png'
 	}));
 	return spriteData.pipe(gulp.dest('images'));
 });
@@ -110,9 +134,7 @@ gulp.task('html', () => {
 });
 
 gulp.task('images', () => {
-	gulp.src([
-			config.paths.images
-		])
+	gulp.src(config.paths.images)
 		.pipe(gulp.dest(config.paths.dist + '/images'))
 		// .pipe(connect.reload());
 });
@@ -133,16 +155,6 @@ gulp.task('css', () => {
 		.pipe(autoprefixer({
 			browsers: ['last 2 versions']
 		}))
-		.pipe(csslint({
-			'adjoining-classes': false,
-			'compatible-vendor-prefixes': false,
-			'known-properties': false,
-			'box-model': false,
-			'box-sizing': false,
-			'universal-selector': false,
-			'bulletproof-font-face': false
-		}))
-    	.pipe(csslint.reporter())
 		//only minify if gulp is ran with '--type production'
 		.pipe(gutil.env.type === 'production' ? minify() : gutil.noop())
 		.pipe(gulp.dest(config.paths.dist))
@@ -150,9 +162,14 @@ gulp.task('css', () => {
 });
 
 gulp.task('lint', () => {
-	return gulp.src(config.paths.js)
-		.pipe(lint({config: 'eslint.config.json'}))
-		.pipe(lint.format());
+	return gulp.src([
+		config.paths.js,
+		'!./js/twitterFetcher_v10_min.js',
+		'!./js/jquery.bxslider.js'
+		])
+        .pipe(jshint())
+        .pipe(jshint.reporter('default'));
+            
 });
 
 gulp.task('watch', () => {
